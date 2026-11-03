@@ -1,0 +1,41 @@
+= Z80 simple computer
+:toc:
+:toclevels: 2
+
+The schematic is the rebuilt sheet. It opens, it uses stock KiCad 10.0.7 symbols, and the parts now sit inside the paper. The notes under `docs/` say how that was done.
+
+The PCB file in this directory, `Z80_Simple_Computer.kicad_pcb`, is still the original posted board. It does not open. The same bad file is kept in `as-posted/`. Nothing on it has been placed or routed.
+
+That board has to be recreated the same way the schematic was: one step, then look, then the next step. Do not ask for a finished board in one go. The size, the layer count, and the placement are choices for the board you actually want, and they have to be steered in the conversation before any copper is drawn.
+
+A sensible order, and then a check after each one:
+
+. Throw the posted board away and start a new empty board from this schematic, or make the posted file open and then replace it. Do not route the posted file.
+. Update the board from the schematic and look at the footprints. Do not route yet.
+. Agree the outline: board size and how many copper layers.
+. Place the parts. They are through-hole, and the footprints are already named on the sheet.
+. Only then consider routing.
+
+`tools/build_schematic.py` rewrites the schematic. If you move a part in KiCad and then run that script, the script wins. Either edit in KiCad and stop using the script, or change the script. Do not do both.
+
+Read these first:
+
+* link:docs/261103-what-went-wrong-and-how-to-do-it.adoc[Why the posted files are not a computer]
+* link:docs/261103-a-guide-for-andrew.adoc[Doing the sheet one step at a time]
+* link:docs/261104-00%20Chat%20transcript%20--%20fitting%20the%20symbols%20inside%20the%20frame.adoc[Fitting the symbols inside the frame]
+
+
+== Previewing these notes
+
+For a formatted view in Chrome or Chromium, install
+https://chromewebstore.google.com/detail/asciidoctorjs-live-previe/iaalpfgpbocpdfblpnhhgllgbdbchmia[Asciidoctor.js Live Preview].
+Enable *Allow access to file URLs* on the extension's details page, then open a local `.adoc` file.
+The https://docs.asciidoctor.org/browser-extension/install/[installation notes] also mention Edge. Edge has not been tried here.
+
+The two files in this directory are the Mixworx preview style used by the other local projects. Select them in the extension options:
+
+* link:asciidoctorjs-crx-mixworx.css[asciidoctorjs-crx-mixworx.css]: stylesheet for type, headings, tables, code, and print.
+* link:asciidoctorjs-crx-mixworx.js[asciidoctorjs-crx-mixworx.js]: run this *after the document has been rendered*. It marks modifier keys, splits a heading at the first prose colon, and puts anchor positions back after rendering.
+
+If the repository moves, or either file changes, select them again in the extension options.
+GitHub itself still shows the normal colon in a heading. The line break is only in this local preview.

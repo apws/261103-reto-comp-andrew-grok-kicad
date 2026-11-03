@@ -507,13 +507,13 @@ def build():
              "Package_DIP:DIP-40_W15.24mm", pins["pio"])
     sh.place("U5", "Interface_UART:16550", "16C550", 430, 175, 1,
              "Package_DIP:DIP-40_W15.24mm", pins["uart"])
-    sh.place("U6", "Interface_UART:MAX232", "MAX232", 545, 95, 1,
+    sh.place("U6", "Interface_UART:MAX232", "MAX232", 519.6, 95, 1,
              FP_DIP16, pins["max"])
     sh.place("Y1", "Oscillator:CXO_DIP14", "4MHz", 95, 270, 1,
              "Oscillator:Oscillator_DIP-14", pins["y14"])
     sh.place("Y2", "Oscillator:CXO_DIP8", "1.8432MHz", 430, 310, 1,
              "Oscillator:Oscillator_DIP-8", pins["y8"])
-    sh.place("J1", "Connector:DE9_Socket", "DE9", 545, 210, 1, FP_DE9, pins["de9"])
+    sh.place("J1", "Connector:DE9_Socket", "DE9", 519.6, 210, 1, FP_DE9, pins["de9"])
 
     # 74HC14 units 1..6 are gates, 7 is power. Value says HCT: same pinout,
     # and the 10.0.7 library has no separate 74HCT14 symbol.
@@ -684,9 +684,9 @@ def build():
             sh.labels.append((end_m, net_minus, "left bottom"))
 
     # C1+ to C1-, positive at C1+. Local labels, wires already on the stubs.
-    polarized("C20", 500, 95, "C1P", "C1M")
-    polarized("C21", 590, 70, "C2P", "C2M")
-    polarized("C22", 545, 40, "+5V", "GND")  # replaced below for VS+
+    polarized("C20", 474.6, 95, "C1P", "C1M")
+    polarized("C21", 564.6, 70, "C2P", "C2M")
+    polarized("C22", 519.6, 40, "+5V", "GND")  # extra 1uF across the rail
     # Fix C22: it should be VS+ to GND, not +5V. Re-label by not using that.
     # Easier to place VS caps explicitly after removing the mistaken C22 nets.
     # C22 was just created with +5V/GND. Change those two labels/power calls:
@@ -702,9 +702,9 @@ def build():
     sh.label_named("U6", "C2-", "C2M")
     sh.label_named("U6", "VS+", "VS_PLUS")
     sh.label_named("U6", "VS-", "VS_MINUS")
-    polarized("C23", 590, 120, "VS_PLUS", "GND")
+    polarized("C23", 564.6, 120, "VS_PLUS", "GND")
     # V- cap: positive at GND, negative at VS-.
-    polarized("C24", 590, 150, "GND", "VS_MINUS")
+    polarized("C24", 564.6, 150, "GND", "VS_MINUS")
 
     # --- DE9 as DTE ---
     for num, net in (("2", "RX_RS232"), ("3", "TX_RS232"), ("4", "DTR_RS232"),
@@ -750,7 +750,7 @@ def build():
     sh.place("R1", "Device:R", "10k", 500, 300, 1, FP_R, pins["r"])
     sh.place("R2", "Device:R", "10", 545, 300, 1, FP_R, pins["r"])
     sh.place("C1", "Device:C_Polarized", "1uF", 500, 330, 1, FP_CP, pins["cp"])
-    sh.place("SW1", "Switch:SW_Push", "RESET", 575, 300, 1, FP_SW, pins["sw"])
+    sh.place("SW1", "Switch:SW_Push", "RESET", 564.84, 300, 1, FP_SW, pins["sw"])
     # R1 pin 1 top toward +5V, pin 2 bottom toward RESET_RC
     sh.power_on("R1", "1", "+5V", length=2.54)
     sh.label_pin("R1", "2", "RESET_RC", length=2.54)
@@ -802,8 +802,8 @@ def build():
         "8255 RESET and 16550 MR are active high, after one inverter. Z80 /RESET is after the second.",
     ]
     for i, line in enumerate(notes):
-        sh.text(line, 20, 18 + i * 3.2, 1.27)
-    sh.text("C2-C11: 100nF, one per IC, drawn here rather than beside each chip.", 200, 358, 1.27)
+        sh.text(line, 18, 16 + i * 3.0, 1.27)
+    sh.text("C2-C11: 100nF, one per IC, drawn here rather than beside each chip.", 180, 348, 1.27)
     return sh
 
 
@@ -860,7 +860,8 @@ def emit(sh: Sheet) -> str:
         esc = text.replace("\\", "\\\\").replace('"', '\\"')
         lines.append(
             f'  (text "{esc}" (exclude_from_sim no) (at {fmt(x)} {fmt(y)} 0) '
-            f'(effects (font (size {fmt(size)} {fmt(size)}))) (uuid "{uuid.uuid4()}"))'
+            f'(effects (font (size {fmt(size)} {fmt(size)})) (justify left bottom)) '
+            f'(uuid "{uuid.uuid4()}"))'
         )
     lines.append("  (sheet_instances")
     lines.append('    (path "/" (page "1"))')
