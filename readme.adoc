@@ -4,16 +4,14 @@
 
 The schematic is the rebuilt sheet. It opens, it uses stock KiCad 10.0.7 symbols, and the parts now sit inside the paper. The notes under `docs/` say how that was done.
 
-The PCB file in this directory, `Z80_Simple_Computer.kicad_pcb`, is still the original posted board. It does not open. The same bad file is kept in `as-posted/`. Nothing on it has been placed or routed.
+The PCB file in this directory is not the posted board. That file would not open, and it is kept unchanged in `as-posted/`. The project board is a new KiCad 10 board, recreated empty and then updated from this schematic. The update brought the 33 footprints across. There is no board outline, no chosen placement, and no tracks.
 
-That board has to be recreated the same way the schematic was: one step, then look, then the next step. Do not ask for a finished board in one go. The size, the layer count, and the placement are choices for the board you actually want, and they have to be steered in the conversation before any copper is drawn.
+The rest still has to be steered the same way the schematic was: one step, then look, then the next step. Do not ask for a finished board in one go. The size, the layer count, and the placement are choices for the board you actually want, and they have to be decided before any copper is drawn.
 
-A sensible order, and then a check after each one:
+What is left, and then a check after each one:
 
-. Throw the posted board away and start a new empty board from this schematic, or make the posted file open and then replace it. Do not route the posted file.
-. Update the board from the schematic and look at the footprints. Do not route yet.
 . Agree the outline: board size and how many copper layers.
-. Place the parts. They are through-hole, and the footprints are already named on the sheet.
+. Place the parts. They are through-hole, and the footprints are already on the board.
 . Only then consider routing.
 
 `tools/build_schematic.py` rewrites the schematic. If you move a part in KiCad and then run that script, the script wins. Either edit in KiCad and stop using the script, or change the script. Do not do both.
