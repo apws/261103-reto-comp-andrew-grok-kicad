@@ -512,7 +512,7 @@ def build():
              "Package_DIP:DIP-40_W15.24mm", pins["uart"])
     sh.place("U6", "Interface_UART:MAX232", "MAX232", 365, 120, 1,
              FP_DIP16, pins["max"])
-    sh.place("Y1", "Oscillator:CXO_DIP14", "4MHz", 55, 195, 1,
+    sh.place("Y1", "Oscillator:CXO_DIP14", "4MHz", 55, 185, 1,
              "Oscillator:Oscillator_DIP-14", pins["y14"])
     sh.place("Y2", "Oscillator:CXO_DIP8", "1.8432MHz", 275, 235, 1,
              "Oscillator:Oscillator_DIP-8", pins["y8"])
@@ -521,13 +521,13 @@ def build():
     # 74HC14 units 1..6 are gates, 7 is power. Value says HCT: same pinout,
     # and the 10.0.7 library has no separate 74HCT14 symbol.
     for unit, xy in (
-        (1, (40, 235)),   # U7A reset in
-        (2, (95, 235)),   # U7B reset out
+        (1, (40, 218)),   # U7A reset in
+        (2, (95, 218)),   # U7B reset out
         (3, (280, 32)),   # U7C A7
         (4, (130, 32)),   # U7D A15
         (5, (185, 270)),  # U7E spare
         (6, (230, 270)),  # U7F spare
-        (7, (400, 230)),  # power
+        (7, (395, 170)),  # power, above the title block
     ):
         sh.place("U7", "74xx:74HC14", "74HCT14", xy[0], xy[1], unit, FP_DIP14, pins["inv"])
 
@@ -538,7 +538,7 @@ def build():
         (2, (380, 32)),   # U8B UART
         (3, (225, 32)),   # U8C ROM
         (4, (175, 32)),   # U8D RAM
-        (5, (400, 260)),  # power
+        (5, (395, 206)),  # power, above the title block
     ):
         sh.place("U8", "74xx:74LS32", "74HCT32", xy[0], xy[1], unit, FP_DIP14, pins["or"])
 
@@ -707,7 +707,7 @@ def build():
     sh.label_named("U6", "VS-", "VS_MINUS")
     polarized("C23", 400, 118, "VS_PLUS", "GND")
     # V- cap: positive at GND, negative at VS-.
-    polarized("C24", 400, 158, "GND", "VS_MINUS")
+    polarized("C24", 400, 138, "GND", "VS_MINUS")
 
     # --- DE9 as DTE ---
     for num, net in (("2", "RX_RS232"), ("3", "TX_RS232"), ("4", "DTR_RS232"),
@@ -750,10 +750,10 @@ def build():
     sh.label_pin("U8", "6", "~{UARTCS}", unit=2)
 
     # --- reset. Two Schmitt inversions. Active-high parts take the first. ---
-    sh.place("R1", "Device:R", "10k", 40, 268, 1, FP_R, pins["r"])
-    sh.place("R2", "Device:R", "10", 75, 268, 1, FP_R, pins["r"])
-    sh.place("C1", "Device:C_Polarized", "1uF", 40, 288, 1, FP_CP, pins["cp"])
-    sh.place("SW1", "Switch:SW_Push", "RESET", 115, 268, 1, FP_SW, pins["sw"])
+    sh.place("R1", "Device:R", "10k", 40, 248, 1, FP_R, pins["r"])
+    sh.place("R2", "Device:R", "10", 78, 248, 1, FP_R, pins["r"])
+    sh.place("C1", "Device:C_Polarized", "1uF", 40, 268, 1, FP_CP, pins["cp"])
+    sh.place("SW1", "Switch:SW_Push", "RESET", 118, 248, 1, FP_SW, pins["sw"])
     # R1 pin 1 top toward +5V, pin 2 bottom toward RESET_RC
     sh.power_on("R1", "1", "+5V", length=2.54)
     sh.label_pin("R1", "2", "RESET_RC", length=2.54)
