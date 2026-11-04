@@ -496,46 +496,49 @@ def build():
     }
     pins = {k: sh.use(v) for k, v in parts.items()}
 
-    # Centers, millimetres, Y down. A2 is 594 x 420.
-    sh.place("U1", "CPU:Z84C00xxP", "Z84C00", 95, 165, 1,
+    # Centers, millimetres, Y down. A3 landscape is 420 x 297.
+    # A4 was the asked page. It does not fit: a DIP-40 symbol is about
+    # 100 mm tall, so two cannot stack on 210 mm, and one row of the five
+    # large chips does not fit across 297 mm. The plan says stop at A3.
+    sh.place("U1", "CPU:Z84C00xxP", "Z84C00", 55, 115, 1,
              "Package_DIP:DIP-40_W15.24mm", pins["cpu"])
-    sh.place("U2", "Memory_RAM:HM62256BLP", "62256", 210, 100, 1,
+    sh.place("U2", "Memory_RAM:HM62256BLP", "62256", 125, 100, 1,
              "Package_DIP:DIP-28_W15.24mm", pins["ram"])
-    sh.place("U3", "Memory_EPROM:27C256", "27C256", 325, 105, 1,
+    sh.place("U3", "Memory_EPROM:27C256", "27C256", 185, 105, 1,
              "Package_DIP:DIP-28_W15.24mm", pins["rom"])
-    sh.place("U4", "Interface:82C55A", "82C55A", 210, 270, 1,
+    sh.place("U4", "Interface:82C55A", "82C55A", 140, 225, 1,
              "Package_DIP:DIP-40_W15.24mm", pins["pio"])
-    sh.place("U5", "Interface_UART:16550", "16C550", 430, 175, 1,
+    sh.place("U5", "Interface_UART:16550", "16C550", 275, 155, 1,
              "Package_DIP:DIP-40_W15.24mm", pins["uart"])
-    sh.place("U6", "Interface_UART:MAX232", "MAX232", 519.6, 95, 1,
+    sh.place("U6", "Interface_UART:MAX232", "MAX232", 365, 120, 1,
              FP_DIP16, pins["max"])
-    sh.place("Y1", "Oscillator:CXO_DIP14", "4MHz", 95, 270, 1,
+    sh.place("Y1", "Oscillator:CXO_DIP14", "4MHz", 55, 195, 1,
              "Oscillator:Oscillator_DIP-14", pins["y14"])
-    sh.place("Y2", "Oscillator:CXO_DIP8", "1.8432MHz", 430, 310, 1,
+    sh.place("Y2", "Oscillator:CXO_DIP8", "1.8432MHz", 275, 235, 1,
              "Oscillator:Oscillator_DIP-8", pins["y8"])
-    sh.place("J1", "Connector:DE9_Socket", "DE9", 519.6, 210, 1, FP_DE9, pins["de9"])
+    sh.place("J1", "Connector:DE9_Socket", "DE9", 365, 210, 1, FP_DE9, pins["de9"])
 
     # 74HC14 units 1..6 are gates, 7 is power. Value says HCT: same pinout,
     # and the 10.0.7 library has no separate 74HCT14 symbol.
     for unit, xy in (
-        (1, (470, 250)),  # U7A reset in
-        (2, (530, 250)),  # U7B reset out
-        (3, (340, 330)),  # U7C A7
-        (4, (150, 40)),   # U7D A15
-        (5, (40, 300)),   # U7E spare
-        (6, (40, 330)),   # U7F spare
-        (7, (40, 200)),   # power
+        (1, (40, 235)),   # U7A reset in
+        (2, (95, 235)),   # U7B reset out
+        (3, (280, 32)),   # U7C A7
+        (4, (130, 32)),   # U7D A15
+        (5, (185, 270)),  # U7E spare
+        (6, (230, 270)),  # U7F spare
+        (7, (400, 230)),  # power
     ):
         sh.place("U7", "74xx:74HC14", "74HCT14", xy[0], xy[1], unit, FP_DIP14, pins["inv"])
 
     # 74LS32 is the only quad OR in the 10.0.7 library with this pinout.
     # Value is the part the GIF calls for.
     for unit, xy in (
-        (1, (400, 330)),  # U8A PIO
-        (2, (470, 330)),  # U8B UART
-        (3, (250, 40)),   # U8C ROM
-        (4, (185, 40)),   # U8D RAM
-        (5, (40, 240)),   # power
+        (1, (330, 32)),   # U8A PIO
+        (2, (380, 32)),   # U8B UART
+        (3, (225, 32)),   # U8C ROM
+        (4, (175, 32)),   # U8D RAM
+        (5, (400, 260)),  # power
     ):
         sh.place("U8", "74xx:74LS32", "74HCT32", xy[0], xy[1], unit, FP_DIP14, pins["or"])
 
@@ -606,9 +609,9 @@ def build():
     # The GIF leaves the PIO ports open. A header gives each label a second pin
     # so the net is a real connector instead of a dangling name.
     for ref, prefix, xy in (
-        ("J2", "PA", (330, 230)),
-        ("J3", "PB", (330, 270)),
-        ("J4", "PC", (330, 310)),
+        ("J2", "PA", (230, 195)),
+        ("J3", "PB", (230, 225)),
+        ("J4", "PC", (230, 255)),
     ):
         sh.place(ref, "Connector_Generic:Conn_01x08", prefix, xy[0], xy[1], 1, FP_HDR, pins["hdr"])
         for bit in range(8):
@@ -684,9 +687,9 @@ def build():
             sh.labels.append((end_m, net_minus, "left bottom"))
 
     # C1+ to C1-, positive at C1+. Local labels, wires already on the stubs.
-    polarized("C20", 474.6, 95, "C1P", "C1M")
-    polarized("C21", 564.6, 70, "C2P", "C2M")
-    polarized("C22", 519.6, 40, "+5V", "GND")  # extra 1uF across the rail
+    polarized("C20", 320, 78, "C1P", "C1M")
+    polarized("C21", 400, 78, "C2P", "C2M")
+    polarized("C22", 365, 62, "+5V", "GND")  # extra 1uF across the rail
     # Fix C22: it should be VS+ to GND, not +5V. Re-label by not using that.
     # Easier to place VS caps explicitly after removing the mistaken C22 nets.
     # C22 was just created with +5V/GND. Change those two labels/power calls:
@@ -702,9 +705,9 @@ def build():
     sh.label_named("U6", "C2-", "C2M")
     sh.label_named("U6", "VS+", "VS_PLUS")
     sh.label_named("U6", "VS-", "VS_MINUS")
-    polarized("C23", 564.6, 120, "VS_PLUS", "GND")
+    polarized("C23", 400, 118, "VS_PLUS", "GND")
     # V- cap: positive at GND, negative at VS-.
-    polarized("C24", 564.6, 150, "GND", "VS_MINUS")
+    polarized("C24", 400, 158, "GND", "VS_MINUS")
 
     # --- DE9 as DTE ---
     for num, net in (("2", "RX_RS232"), ("3", "TX_RS232"), ("4", "DTR_RS232"),
@@ -747,10 +750,10 @@ def build():
     sh.label_pin("U8", "6", "~{UARTCS}", unit=2)
 
     # --- reset. Two Schmitt inversions. Active-high parts take the first. ---
-    sh.place("R1", "Device:R", "10k", 500, 300, 1, FP_R, pins["r"])
-    sh.place("R2", "Device:R", "10", 545, 300, 1, FP_R, pins["r"])
-    sh.place("C1", "Device:C_Polarized", "1uF", 500, 330, 1, FP_CP, pins["cp"])
-    sh.place("SW1", "Switch:SW_Push", "RESET", 564.84, 300, 1, FP_SW, pins["sw"])
+    sh.place("R1", "Device:R", "10k", 40, 268, 1, FP_R, pins["r"])
+    sh.place("R2", "Device:R", "10", 75, 268, 1, FP_R, pins["r"])
+    sh.place("C1", "Device:C_Polarized", "1uF", 40, 288, 1, FP_CP, pins["cp"])
+    sh.place("SW1", "Switch:SW_Push", "RESET", 115, 268, 1, FP_SW, pins["sw"])
     # R1 pin 1 top toward +5V, pin 2 bottom toward RESET_RC
     sh.power_on("R1", "1", "+5V", length=2.54)
     sh.label_pin("R1", "2", "RESET_RC", length=2.54)
@@ -777,20 +780,20 @@ def build():
 
     # decoupling, one 100nF from +5V to GND per package, as on the GIF
     for i, (ref, x) in enumerate(
-        [("C2", 30), ("C3", 45), ("C4", 60), ("C5", 75), ("C6", 90),
-         ("C7", 105), ("C8", 120), ("C9", 135), ("C10", 150), ("C11", 165)],
+        [("C2", 18), ("C3", 30), ("C4", 42), ("C5", 54), ("C6", 66),
+         ("C7", 78), ("C8", 90), ("C9", 102), ("C10", 114), ("C11", 126)],
         start=1,
     ):
-        sh.place(ref, "Device:C", "100nF", x, 370, 1, FP_C, pins["c"])
+        sh.place(ref, "Device:C", "100nF", x, 58, 1, FP_C, pins["c"])
         sh.power_on(ref, "1", "+5V", length=2.54)
         sh.power_on(ref, "2", "GND", length=2.54)
 
     # one PWR_FLAG on each rail, on the 1.27 mm grid
-    flg_hi = sh.flag(25.4, 360)
-    pwr_hi = sh.power_at(25.4, 360 - 2.54, "+5V")
+    flg_hi = sh.flag(18, 78)
+    pwr_hi = sh.power_at(18, 78 - 2.54, "+5V")
     sh.tie(flg_hi["pins"]["1"]["world"], pwr_hi["pins"]["1"]["world"])
-    flg_lo = sh.flag(35.56, 360)
-    pwr_lo = sh.power_at(35.56, 360 + 2.54, "GND")
+    flg_lo = sh.flag(30, 78)
+    pwr_lo = sh.power_at(30, 78 + 2.54, "GND")
     sh.tie(flg_lo["pins"]["1"]["world"], pwr_lo["pins"]["1"]["world"])
 
     notes = [
@@ -802,8 +805,8 @@ def build():
         "8255 RESET and 16550 MR are active high, after one inverter. Z80 /RESET is after the second.",
     ]
     for i, line in enumerate(notes):
-        sh.text(line, 18, 16 + i * 3.0, 1.27)
-    sh.text("C2-C11: 100nF, one per IC, drawn here rather than beside each chip.", 180, 348, 1.27)
+        sh.text(line, 16, 14 + i * 2.6, 1.27)
+    sh.text("C2-C11: 100nF, one per IC, drawn here rather than beside each chip.", 140, 48, 1.27)
     return sh
 
 
@@ -814,7 +817,7 @@ def emit(sh: Sheet) -> str:
     lines.append('  (generator "eeschema")')
     lines.append('  (generator_version "10.0")')
     lines.append(f'  (uuid "{SHEET_UUID}")')
-    lines.append('  (paper "A2")')
+    lines.append('  (paper "A3")')
     lines.append("  (title_block")
     lines.append('    (title "Z80 Simple Educational Computer")')
     lines.append('    (date "2026-11-03")')
