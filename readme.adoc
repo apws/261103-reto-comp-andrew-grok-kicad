@@ -6,13 +6,14 @@ The schematic is the rebuilt sheet. It opens, it uses stock KiCad 10.0.7 symbols
 
 The PCB file in this directory is not the posted board. That file would not open, and it is kept unchanged in `as-posted/`. The project board is a new KiCad 10 board, recreated empty and then updated from this schematic. The update brought the 33 footprints across. There is no board outline, no chosen placement, and no tracks.
 
-The rest still has to be steered the same way the schematic was: one step, then look, then the next step. Do not ask for a finished board in one go. The size, the layer count, and the placement are choices for the board you actually want, and they have to be decided before any copper is drawn.
+The rest still has to be done the same way the schematic was: one step, then look, then the next step. Do not ask for a finished board in one go. The choices for the first trial are written in the plan: A4 schematic, Eurocard outline, four layers, a screw terminal for +5V, four M3 holes, and routing by hand in KiCad.
 
 What is left, and then a check after each one:
 
-. Agree the outline: board size and how many copper layers.
-. Place the parts. They are through-hole, and the footprints are already on the board.
-. Only then consider routing.
+. Move the symbols onto A4 landscape.
+. Add the screw terminal on the sheet and update the board.
+. Place the parts inside 160 by 100 mm.
+. Only then route.
 
 `tools/build_schematic.py` rewrites the schematic. If you move a part in KiCad and then run that script, the script wins. Either edit in KiCad and stop using the script, or change the script. Do not do both.
 
@@ -21,6 +22,7 @@ Read these first:
 * link:docs/261103-what-went-wrong-and-how-to-do-it.adoc[Why the posted files are not a computer]
 * link:docs/261103-a-guide-for-andrew.adoc[Doing the sheet one step at a time]
 * link:docs/261104-00%20Chat%20transcript%20--%20fitting%20the%20symbols%20inside%20the%20frame.adoc[Fitting the symbols inside the frame]
+* link:docs/261104-01%20Plan%20--%20placing%20and%20routing%20the%20board.adoc[Plan for placing and routing the board]
 
 
 == Previewing these notes
