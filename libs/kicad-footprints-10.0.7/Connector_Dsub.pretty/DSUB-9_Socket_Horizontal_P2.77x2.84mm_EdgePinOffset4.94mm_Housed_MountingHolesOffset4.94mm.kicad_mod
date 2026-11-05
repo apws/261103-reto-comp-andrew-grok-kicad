@@ -300,7 +300,7 @@
 		(layer "F.Fab")
 	)
 	(embedded_fonts no)
-	(model "${KICAD10_3DMODEL_DIR}/Connector_Dsub.3dshapes/DSUB-9_Socket_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset4.94mm.step"
+	(model "${KIPRJMOD}/libs/kicad-packages3D-10.0.7/Connector_Dsub.3dshapes/DSUB-9_Socket_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset4.94mm.step"
 		(offset
 			(xyz 0 0 0)
 		)

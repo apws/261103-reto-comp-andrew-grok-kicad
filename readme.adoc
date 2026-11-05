@@ -4,7 +4,7 @@
 
 The schematic is the rebuilt sheet. It opens, it uses stock KiCad 10.0.7 symbols, and the parts now sit inside the paper. The notes under `docs/` say how that was done.
 
-The PCB file in this directory is not the posted board. That file would not open, and it is kept unchanged in `as-posted/`. The project board is a new KiCad 10 board. The signal tracks from the first routing attempt have been removed. What is on it now is the Eurocard outline, the parts placed on the top, four layers, and the inner ground and +5V planes. The DE9 plug hangs off the left edge. There are no signal tracks.
+The PCB file in this directory is not the posted board. That file would not open, and it is kept unchanged in `as-posted/`. The project board is a new KiCad 10 board. The signal tracks from the first routing attempt have been removed. What is on it now is the Eurocard outline, the parts placed on the top, four layers, and the inner ground and +5V planes. The DE9 plug hangs off the left edge. There are no signal tracks. The STEP models are in `libs/kicad-packages3D-10.0.7/`, and the board names them with `${KIPRJMOD}`, the project directory.
 
 The choices for this trial are in the plan. The sheet is A3, because the DIP-40 symbols do not fit A4. The board is a 160 by 100 mm Eurocard, four layers, a screw terminal for +5V, four M3 holes, and tracks written into the board file. FreeRouting was not used.
 

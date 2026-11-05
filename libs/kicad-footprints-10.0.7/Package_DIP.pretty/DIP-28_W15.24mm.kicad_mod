@@ -360,7 +360,7 @@
 		(layer "F.Fab")
 	)
 	(embedded_fonts no)
-	(model "${KICAD10_3DMODEL_DIR}/Package_DIP.3dshapes/DIP-28_W15.24mm.step"
+	(model "${KIPRJMOD}/libs/kicad-packages3D-10.0.7/Package_DIP.3dshapes/DIP-28_W15.24mm.step"
 		(offset
 			(xyz 0 0 0)
 		)
