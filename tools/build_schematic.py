@@ -242,12 +242,13 @@ class Sheet:
         self.syms[atom(sym[1])] = sym
         return collect_pins(sym)
 
-    def place(self, ref, lib_id, value, x, y, unit, footprint, pins, *, power=False):
+    def place(self, ref, lib_id, value, x, y, unit, footprint, pins, *, power=False, mechanical=False):
         x, y = snap(x), snap(y)
         # Every unit of a real part stays in the netlist. KiCad 10 drops a
         # unit whose in_bom is no, so a gate drawn that way never connects.
         # The BOM still lists the reference once. Power symbols stay out.
-        bom = not power
+        # A mounting hole is on the board and out of the BOM, and it has no pin.
+        bom = not power and not mechanical
         chosen = []
         for num, recs in pins.items():
             keep = [
@@ -259,7 +260,7 @@ class Sheet:
             # Prefer the default body style if both exist.
             keep.sort(key=lambda r: 0 if r["style"] == 1 else 1)
             chosen.append(keep[0])
-        if not chosen:
+        if not chosen and not mechanical:
             raise SystemExit(f"no pins for {ref} unit {unit} ({lib_id})")
         inst = {
             "ref": ref,
@@ -270,6 +271,8 @@ class Sheet:
             "unit": unit,
             "footprint": footprint or "",
             "bom": bom,
+            "on_board": not power,
+            "pos": not power,
             "power": power,
             "uuid": str(uuid.uuid4()),
             "pins": {},
@@ -445,8 +448,8 @@ def emit_instance(p):
         [a("body_style"), a("1")],
         [a("exclude_from_sim"), a("no")],
         [a("in_bom"), a("yes" if p["bom"] else "no")],
-        [a("on_board"), a("yes" if p["bom"] else "no")],
-        [a("in_pos_files"), a("yes" if p["bom"] else "no")],
+        [a("on_board"), a("yes" if p["on_board"] else "no")],
+        [a("in_pos_files"), a("yes" if p["pos"] else "no")],
         [a("dnp"), a("no")],
         [a("uuid"), q(p["uuid"])],
     ]
@@ -493,6 +496,8 @@ def build():
         "sw": prepare("Switch", "SW_Push"),
         "de9": prepare("Connector", "DE9_Socket"),
         "hdr": prepare("Connector_Generic", "Conn_01x08"),
+        "screw": prepare("Connector", "Screw_Terminal_01x02"),
+        "hole": prepare("Mechanical", "MountingHole"),
     }
     pins = {k: sh.use(v) for k, v in parts.items()}
 
@@ -807,6 +812,17 @@ def build():
     for i, line in enumerate(notes):
         sh.text(line, 16, 14 + i * 2.6, 1.27)
     sh.text("C2-C11: 100nF, one per IC, drawn here rather than beside each chip.", 140, 48, 1.27)
+
+    # Power inlet and the four board holes. They are not on the GIF.
+    # J5 is the screw terminal: pin 1 is +5V, pin 2 is GND.
+    FP_J5 = "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal"
+    FP_HOLE = "MountingHole:MountingHole_3.2mm_M3"
+    sh.place("J5", "Connector:Screw_Terminal_01x02", "PWR", 400, 52, 1, FP_J5, pins["screw"])
+    sh.power_on("J5", "1", "+5V")
+    sh.power_on("J5", "2", "GND")
+    for i, ref in enumerate(("H1", "H2", "H3", "H4")):
+        sh.place(ref, "Mechanical:MountingHole", "M3", 214 + i * 16, 18, 1,
+                 FP_HOLE, pins["hole"], mechanical=True)
     return sh
 
 

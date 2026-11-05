@@ -6,6 +6,7 @@
   (lib (name "Connector_Generic") (type "KiCad") (uri "${KIPRJMOD}/libs/kicad-symbols-10.0.7/Connector_Generic.kicad_symdir") (options "") (descr "KiCad 10.0.7"))
   (lib (name "Device") (type "KiCad") (uri "${KIPRJMOD}/libs/kicad-symbols-10.0.7/Device.kicad_symdir") (options "") (descr "KiCad 10.0.7"))
   (lib (name "Interface") (type "KiCad") (uri "${KIPRJMOD}/libs/kicad-symbols-10.0.7/Interface.kicad_symdir") (options "") (descr "KiCad 10.0.7"))
+  (lib (name "Mechanical") (type "KiCad") (uri "${KIPRJMOD}/libs/kicad-symbols-10.0.7/Mechanical.kicad_symdir") (options "") (descr "KiCad 10.0.7"))
   (lib (name "Interface_UART") (type "KiCad") (uri "${KIPRJMOD}/libs/kicad-symbols-10.0.7/Interface_UART.kicad_symdir") (options "") (descr "KiCad 10.0.7"))
   (lib (name "Memory_EPROM") (type "KiCad") (uri "${KIPRJMOD}/libs/kicad-symbols-10.0.7/Memory_EPROM.kicad_symdir") (options "") (descr "KiCad 10.0.7"))
   (lib (name "Memory_RAM") (type "KiCad") (uri "${KIPRJMOD}/libs/kicad-symbols-10.0.7/Memory_RAM.kicad_symdir") (options "") (descr "KiCad 10.0.7"))

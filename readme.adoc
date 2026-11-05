@@ -4,16 +4,14 @@
 
 The schematic is the rebuilt sheet. It opens, it uses stock KiCad 10.0.7 symbols, and the parts now sit inside the paper. The notes under `docs/` say how that was done.
 
-The PCB file in this directory is not the posted board. That file would not open, and it is kept unchanged in `as-posted/`. The project board is a new KiCad 10 board, recreated empty and then updated from this schematic. The update brought the 33 footprints across. There is no board outline, no chosen placement, and no tracks.
+The PCB file in this directory is not the posted board. That file would not open, and it is kept unchanged in `as-posted/`. The project board is a new KiCad 10 board. The signal tracks from the first routing attempt have been removed. What is on it now is the Eurocard outline, the parts placed on the top, four layers, and the inner ground and +5V planes. The DE9 plug hangs off the left edge. There are no signal tracks.
 
-The rest still has to be done the same way the schematic was: one step, then look, then the next step. Do not ask for a finished board in one go. The choices for the first trial are written in the plan: A4 schematic, Eurocard outline, four layers, a screw terminal for +5V, four M3 holes, and routing by hand in KiCad.
+The choices for this trial are in the plan. The sheet is A3, because the DIP-40 symbols do not fit A4. The board is a 160 by 100 mm Eurocard, four layers, a screw terminal for +5V, four M3 holes, and tracks written into the board file. FreeRouting was not used.
 
-What is left, and then a check after each one:
+What is left:
 
-. Move the symbols onto A4 landscape.
-. Add the screw terminal on the sheet and update the board.
-. Place the parts inside 160 by 100 mm.
-. Only then route.
+. Route the signals. Not with the 0.25 mm grid script.
+. Look at the placement in KiCad before that route.
 
 `tools/build_schematic.py` rewrites the schematic. If you move a part in KiCad and then run that script, the script wins. Either edit in KiCad and stop using the script, or change the script. Do not do both.
 
@@ -23,6 +21,11 @@ Read these first:
 * link:docs/261103-a-guide-for-andrew.adoc[Doing the sheet one step at a time]
 * link:docs/261104-00%20Chat%20transcript%20--%20fitting%20the%20symbols%20inside%20the%20frame.adoc[Fitting the symbols inside the frame]
 * link:docs/261104-01%20Plan%20--%20placing%20and%20routing%20the%20board.adoc[Plan for placing and routing the board]
+* link:docs/261104-02%20Chat%20transcript%20--%20the%20board%20plan%20and%20the%20public%20repo.adoc[The board plan, and the public repository]
+* link:docs/261105-22%20Placing%20the%20Eurocard%20and%20the%20first%20tracks.adoc[Placing the Eurocard, and the first tracks]
+* link:docs/261105-22%20JLCPCB%20rules%20for%20this%20board.adoc[JLCPCB rules for this board]
+* link:docs/261105-23%20Placement%20only,%20connectors%20facing%20out.adoc[Placement only, connectors facing out]
+* link:docs/261105-23%203D%20models%20for%20the%20footprints.adoc[3D models for the footprints]
 
 
 == Previewing these notes
