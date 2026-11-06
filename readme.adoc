@@ -4,14 +4,14 @@
 
 The schematic is the rebuilt sheet. It opens, it uses stock KiCad 10.0.7 symbols, and the parts now sit inside the paper. The notes under `docs/` say how that was done.
 
-The PCB file in this directory is not the posted board. That file would not open, and it is kept unchanged in `as-posted/`. The project board is a new KiCad 10 board. The signal tracks from the first routing attempt have been removed. What is on it now is the Eurocard outline, the parts placed on the top, four layers, and the inner ground and +5V planes. The DE9 plug hangs off the left edge. There are no signal tracks. The STEP models are in `libs/kicad-packages3D-10.0.7/`, and the board names them with `${KIPRJMOD}`, the project directory.
+The PCB file in this directory is not the posted board. That file would not open, and it is kept unchanged in `as-posted/`. The project board is a new KiCad 10 board. The signal tracks from the first routing attempt have been removed. What is on it now is the Eurocard outline, the parts placed on the top, four layers, and the inner ground and +5V planes. The DE9 plug hangs off the left edge. The screw-terminal holes hang off the right edge. There are no signal tracks. The STEP models are in `libs/kicad-packages3D-10.0.7/`, and the board names them with `${KIPRJMOD}`, the project directory.
 
 The choices for this trial are in the plan. The sheet is A3, because the DIP-40 symbols do not fit A4. The board is a 160 by 100 mm Eurocard, four layers, a screw terminal for +5V, four M3 holes, and tracks written into the board file. FreeRouting was not used.
 
 What is left:
 
-. Route the signals. Not with the 0.25 mm grid script.
-. Look at the placement in KiCad before that route.
+. Route the signals in KiCad, one group of nets at a time. Not with the 0.25 mm grid script.
+. The first proposed group is the two clocks and reset. See the note on Andrew's brief.
 
 `tools/build_schematic.py` rewrites the schematic. If you move a part in KiCad and then run that script, the script wins. Either edit in KiCad and stop using the script, or change the script. Do not do both.
 
@@ -26,6 +26,11 @@ Read these first:
 * link:docs/261105-22%20JLCPCB%20rules%20for%20this%20board.adoc[JLCPCB rules for this board]
 * link:docs/261105-23%20Placement%20only,%20connectors%20facing%20out.adoc[Placement only, connectors facing out]
 * link:docs/261105-23%203D%20models%20for%20the%20footprints.adoc[3D models for the footprints]
+* link:docs/261106-12%20Screw%20terminal%20holes%20facing%20out.adoc[Screw terminal holes facing out]
+* link:docs/261106-12%20Capacitors%20beside%20the%20power%20pins.adoc[Capacitors beside the power pins]
+* link:docs/261106-12%20MAX232%20beside%20the%20DE9.adoc[MAX232 beside the DE9]
+* link:docs/261106-12%20Andrew's%20design%20brief.adoc[Andrew's design brief]
+* link:docs/261106-12%20Where%20Andrew's%20brief%20meets%20this%20board.adoc[Where Andrew's brief meets this board]
 
 
 == Previewing these notes

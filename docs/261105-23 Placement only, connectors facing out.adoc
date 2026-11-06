@@ -23,10 +23,9 @@ plugs in. Both shell holes are at x = 4.94 mm. They still have no net.
 == The screw terminal
 
 `J5` is the right-angle Phoenix block, pin 1 on `+5V` and pin 2 on
-`GND`. The wire opening is the footprint's −Y side. It is rotated so
-that opening leaves the right edge, opposite the DE9. The courtyard
-crosses x = 160 mm by a fraction. The pads stay on the board, clear of
-the corner hole and of the PIO.
+`GND`. This pass turned the wire opening the wrong way. The correction
+is in
+link:261106-12%20Screw%20terminal%20holes%20facing%20out.adoc[Screw terminal holes facing out].
 
 
 == The rest

@@ -149,10 +149,12 @@ for _ref in ("C20", "C21", "C22", "C23", "C24"):
 
 def court_centers():
     """Where each courtyard should sit. Y is up. The board is 160 by 100."""
-    chip_w = [("U6", 9.8), ("U5", 17.4), ("U1", 17.4), ("U2", 17.4),
+    # U6 sits beside the DE9. The other DIPs are shifted less, so U4
+    # keeps about 10 mm of board to its right.
+    chips = {"U6": (23.0, 50.0)}
+    chip_w = [("U5", 17.4), ("U1", 17.4), ("U2", 17.4),
               ("U3", 17.4), ("U7", 9.8), ("U8", 9.8), ("U4", 17.4)]
-    x = 34.6
-    chips = {}
+    x = 36.1
     for ref, w in chip_w:
         chips[ref] = (round(x + w / 2, 3), 50.0)
         x += w + 1.2
@@ -169,27 +171,45 @@ def court_centers():
         "SW1": (18.0, 16.0),
         "R1": (18.0, 26.0),
         "R2": (18.0, 32.0),
+        # C1 is the reset timing cap. It stays with R1 and the switch.
         "C1": (28.0, 18.0),
-        "C10": (30.0, 88.0),
-        "C11": (chips["U5"][0] + 12.0, 16.0),
     })
-    for ref, cap in (
-        ("U1", "C2"), ("U2", "C3"), ("U3", "C4"), ("U4", "C5"),
-        ("U5", "C6"), ("U6", "C7"), ("U7", "C8"), ("U8", "C9"),
-    ):
-        pos[cap] = (chips[ref][0], 80.0)
-    for i, ref in enumerate(("C20", "C21", "C22", "C23", "C24")):
-        pos[ref] = (78.0 + i * 7.2, 16.0)
     return pos
 
 
 # Pin-1 anchor and rotation in degrees. In this pcbnew, a positive angle
-# sends the footprint's +Y toward board +X, so the outward face needs -90.
-# J1 plug is the footprint's +Y and leaves the left edge. The flange is on x=0.
-# J5 wire opening is the footprint's -Y and leaves the right edge.
+# sends the footprint's +Y toward board +X.
+# J1 plug is the footprint's +Y. -90 sends that plug off the left edge.
+# The flange is on x=0.
+# J5 wire holes are the footprint's +Y face (the model ends at local y=+5.2).
+# +90 sends that face off the right edge. The pads stay on the board.
 ANCHOR = {
     "J1": (7.78, 55.54, -90),
-    "J5": (154.5, 14.0, -90),
+    "J5": (156.8, 19.08, 90),
+}
+
+# Pin-1 anchor and rotation for the capacitors. A disc at rotation 0 has
+# pin 2 five millimetres to the right. A radial at -90 has pin 2 below pin 1.
+# The 100 nF parts are one global bypass per package. The 1 uF parts C20,
+# C21, C23 and C24 are the MAX232 pump and sit on U6's pins. C22 is the only
+# capacitor straight across +5V and GND, so it sits by the screw terminal.
+CAP_ANCHOR = {
+    "C2": (53.28, 77.65, 0),
+    "C3": (85.38, 29.97, 0),
+    "C4": (105.72, 29.97, 0),
+    "C5": (144.00, 77.65, 0),
+    "C6": (52.94, 22.36, 0),
+    "C7": (22.60, 37.61, 0),
+    "C8": (115.00, 38.86, 0),
+    "C9": (125.98, 38.86, 0),
+    "C10": (5.88, 69.42, 0),
+    "C11": (38.49, 7.42, 0),
+    "C20": (14.90, 42.40, -90),
+    "C21": (14.90, 48.39, -90),
+    "C22": (146.60, 16.54, 0),
+    # Above the pump caps. The old spot beside R2 is now the chip.
+    "C23": (14.90, 36.42, -90),
+    "C24": (13.65, 55.63, 0),
 }
 
 
@@ -197,6 +217,7 @@ def place_all(board, comps):
     courts = court_centers()
     pos = {ref: (cx - OFF[ref][0], cy - OFF[ref][1], 0) for ref, (cx, cy) in courts.items()}
     pos.update(ANCHOR)
+    pos.update(CAP_ANCHOR)
 
     new_libs = {
         "MountingHole": FP / "MountingHole.pretty",
